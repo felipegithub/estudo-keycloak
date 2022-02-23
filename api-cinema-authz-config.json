@@ -1,0 +1,110 @@
+{
+  "allowRemoteResourceManagement": true,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "Recurso dos Filmes",
+      "ownerManagedAccess": false,
+      "displayName": "Recurso dos Filmes",
+      "attributes": {},
+      "_id": "da004356-188b-47f2-a302-6d103fe9cfac",
+      "uris": [
+        "/filme/*"
+      ],
+      "scopes": [
+        {
+          "name": "incluir"
+        },
+        {
+          "name": "listar"
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "434c8038-d96c-4675-8a68-256ef0f4087c",
+      "name": "Default Policy",
+      "description": "A policy that grants access only for users within this realm",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "AFFIRMATIVE",
+      "config": {
+        "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
+      }
+    },
+    {
+      "id": "200c662a-5457-4ae4-aae9-cbd1fb01052e",
+      "name": "Precisa Ser 'listador'",
+      "description": "Usuário tem que ter a role 'listador'",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"listador\",\"required\":true}]"
+      }
+    },
+    {
+      "id": "eba075dc-4b43-48fd-b4a7-4f401e579d2c",
+      "name": "Tem que ser administrador",
+      "description": "User tem que ter a role 'administrador'",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"administrador\",\"required\":true}]"
+      }
+    },
+    {
+      "id": "3fb71d31-cc85-45a9-8089-4e2d8ebb0aba",
+      "name": "Default Permission",
+      "description": "A permission that applies to the default resource type",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "defaultResourceType": "urn:api-cinema:resources:default",
+        "applyPolicies": "[\"Default Policy\"]"
+      }
+    },
+    {
+      "id": "7dad8821-7366-4e17-a81d-1a368334c521",
+      "name": "Permissão para Listar Filme",
+      "description": "Permissão para Listar Filme",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"Recurso dos Filmes\"]",
+        "scopes": "[\"listar\"]",
+        "applyPolicies": "[\"Default Policy\"]"
+      }
+    },
+    {
+      "id": "9b58fab8-a569-4e6a-a6f8-30e0a8e5617e",
+      "name": "Permissão para incluir filme",
+      "description": "Permissão para incluir filme",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"Recurso dos Filmes\"]",
+        "scopes": "[\"incluir\"]",
+        "applyPolicies": "[\"Tem que ser administrador\"]"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "id": "9c10cfd6-752c-4842-95f9-d7a3dfd656e0",
+      "name": "listar",
+      "displayName": "Listar"
+    },
+    {
+      "id": "ccf20785-2747-44eb-a2f5-bb84be26fee9",
+      "name": "incluir",
+      "displayName": "Incluir"
+    }
+  ],
+  "decisionStrategy": "UNANIMOUS"
+}
